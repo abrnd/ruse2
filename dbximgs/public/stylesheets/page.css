@@ -1,0 +1,23 @@
+html, body
+{
+	height: 100%;
+	margin: 0 auto;
+	padding: 0;
+}
+
+body{
+	display: -webkit-flex;
+  	display: flex;
+}
+
+.menu{
+	background-color: #fff;
+	width: 19%;
+}
+
+.galleria{
+    max-width: 80%;
+    height: 100%;
+    margin: 0 auto;
+    flex: 1;
+}
