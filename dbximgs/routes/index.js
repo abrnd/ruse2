@@ -13,5 +13,5 @@ router.get('/ruse', controller.admin);
 router.post('/post.html', controller.viewValue);
 router.post('/upload', controller.upload);
 
-router.get('/', express.static(path.join(__dirname, "./public")));
+router.get('/ruse', express.static(path.join(__dirname, "./public")));
 module.exports = router;
