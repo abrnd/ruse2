@@ -12,9 +12,8 @@ router.get('/ruse', controller.admin);
 router.get('/test', controller.test);
 
 router.post('/post.html', controller.viewValue);
-router.post('/upload', controller.upload);
+router.post('/update', controller.update);
 
-//router.get('/ruse', express.static(path.join(__dirname, "./views")));
 
 
 module.exports = router;

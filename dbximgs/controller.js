@@ -1,13 +1,14 @@
 const multer = require("multer");
-const path = require("path");
+const { join } = require("path");
+const fs = require('fs');
 
-const upload = multer({
-  dest: "fileprint/"
-  // you might also want to set some limits: https://github.com/expressjs/multer#limits
-});
+const categoriesJsonPath = './public/gallery/categories.json';
 
 module.exports.home = (req,res,next)=>{
-  	var paths = ['images/a.jpg','images/b.jpg','images/c.jpg'];
+
+  //get all directories name
+
+  var paths = ['images/a.jpg','images/b.jpg','images/c.jpg'];
 
 //en foncion de leur path???
 
@@ -31,28 +32,31 @@ module.exports.test = (req, res, next)=>{
   console.log('filename : ');
   console.log(module.filename);
   res.redirect('/');
+};
+
+module.exports.update = (req, res, next)=>{
+  var test = getDirectories('./public');
+  console.log(test);
+};
+
+//return list of dirctorie in array
+
+function updateCategoriesJson() {
+
+  var fileName = './categories.json';
+  var file = require(fileName);
+
+  file.key = 'test';
+
+  fs.writeFile(fileName, JSON.stringify(file), function(err){
+    if(err) return console.log(err);
+    console.log(JSON.stringify(file));
+    console.log('Ok, wrtiting to ' + fileName);
+  });
 }
 
-module.exports.upload = (req, res, next)=>{
-
-
-  console.log(req.file);
-  console.log(req);
-
-	const tempPath = req.file.path;
-  const targetPath = path.join(__dirname, "./public/image/pic.png");
-
-    if (path.extname(req.file.originalname).toLowerCase() === ".png") {
-      fs.rename(tempPath, targetPath, err => {
-        if (err) return handleError(err, res);
-
-        res.status(200).contentType("text/plain").end("File uploaded!");
-      });
-    } else {
-      fs.unlink(tempPath, err => {
-        if (err) return handleError(err, res);
-
-        res.status(403).contentType("text/plain").end("Only .png files are allowed!");
-      });
-  }
+function getDirectories(path) {
+  return fs.readdirSync(path).filter(function (file) {
+    return fs.statSync(path+'/'+file).isDirectory();
+  });
 };
