@@ -8,7 +8,15 @@ module.exports.home = (req,res,next)=>{
 
   //get all directories name
 
+
+
   var paths = ['images/a.jpg','images/b.jpg','images/c.jpg'];
+
+  var jsonCategories = fs.readFileSync('./public/galleries/categories.json');
+  var categoriesName = JSON.parse(jsonCategories);
+  console.log(categoriesName);
+
+
 
 //en foncion de leur path???
 
@@ -35,18 +43,23 @@ module.exports.test = (req, res, next)=>{
 };
 
 module.exports.update = (req, res, next)=>{
-  var test = getDirectories('./public');
-  console.log(test);
+  var categoriesList = getDirectories('./public/galleries');
+  updateCategoriesJson(categoriesList);
 };
 
 //return list of dirctorie in array
 
-function updateCategoriesJson() {
+function updateCategoriesJson(categoriesList) {
 
-  var fileName = './categories.json';
+  var fileName = './public/galleries/categories.json';
   var file = require(fileName);
 
-  file.key = 'test';
+  //categoriesList
+
+  file.categoriesList = JSON.stringify(categoriesList);
+
+  console.log('ici : ');
+  console.log(file);
 
   fs.writeFile(fileName, JSON.stringify(file), function(err){
     if(err) return console.log(err);
