@@ -54,7 +54,10 @@ function updateCategoriesJson(categoriesList) {
   var fileName = './public/galleries/categories.json';
   var file = require(fileName);
 
-  //categoriesList
+  categoriesList = categoriesList.map(x => x.trim());
+
+  console.log('la ');
+  console.log(categoriesList);
 
   file.categoriesList = JSON.stringify(categoriesList);
 
