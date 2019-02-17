@@ -2,27 +2,33 @@ const multer = require("multer");
 const { join } = require("path");
 const fs = require('fs');
 
-const categoriesJsonPath = './public/gallery/categories.json';
+const categoriesJsonPath = './public/galleries/categories.json';
 
 module.exports.home = (req,res,next)=>{
 
   //get all directories name
 
+  //TODO : un parse possiblement évitable, revoir le format de l'obj JSON
+
+  var categoriesObj = JSON.parse(fs.readFileSync(categoriesJsonPath, 'utf8'));
+  var categoryList = JSON.parse(categoriesObj.categoriesList);
+  
+  categoryList.forEach(function(element, index){
+  	console.log(element, index);
+  });
 
 
+  //dans un premier temps, générer le path de la premiere gallery :
+  
   var paths = ['images/a.jpg','images/b.jpg','images/c.jpg'];
 
   var jsonCategories = fs.readFileSync('./public/galleries/categories.json');
   var categoriesName = JSON.parse(jsonCategories);
   console.log(categoriesName);
 
-
-
 //en foncion de leur path???
-
-//Interception 
-
- 	res.render('gallery', { imgs: paths, layout:false});
+//Interception
+ 	res.render('gallery', { imgs: paths, categories: categoryList, layout:false});
 };
 
 module.exports.admin = (req, res, next)=>{
@@ -42,9 +48,16 @@ module.exports.test = (req, res, next)=>{
   res.redirect('/');
 };
 
+//TODO : get nombre image per dir
+
 module.exports.update = (req, res, next)=>{
   var categoriesList = getDirectories('./public/galleries');
   updateCategoriesJson(categoriesList);
+  console.log("here : ");
+  console.log(categoriesList);
+  console.log(typeof categoriesList);
+
+
 };
 
 //return list of dirctorie in array
@@ -70,6 +83,12 @@ function updateCategoriesJson(categoriesList) {
     console.log('Ok, wrtiting to ' + fileName);
   });
 }
+
+function getNbFile(path){
+	return fs.readdir(path, (err, files) => {
+  console.log(files.length);
+});
+};
 
 function getDirectories(path) {
   return fs.readdirSync(path).filter(function (file) {
